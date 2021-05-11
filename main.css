@@ -1,0 +1,57 @@
+/* This is total Body */
+*{
+    margin: 0;
+    padding: 0;
+    
+}
+
+#main{
+    text-align: center;
+}
+
+/* This is heading */
+#heading{
+    text-align: center;
+    margin: 1%;
+    padding: 10px;
+}
+
+/* This is clear button */
+
+#clear{
+    text-align: center;
+    margin-top: 25px;
+    margin-bottom: 50px;
+    padding: 10px;
+    height: 43px;
+    width: 78px;
+    border-radius: 3px;
+}
+
+@media (max-width: 900px){
+    #clear{
+        height: 43px;
+        width: 78px;
+        text-align: center;
+        font-size: 19px;
+    }
+}
+#clear:hover{
+    color: white;
+    background-color: green;
+}
+
+/* This is canvas */
+
+#canvasdiv{
+    border: 2px solid black;
+    height: 540px;
+    width: 95%;
+    border-radius: 4px;
+    margin: auto;
+}
+
+canvas{
+    height: 540px;
+    width: 100%;
+}
