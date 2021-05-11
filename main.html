@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/main.css">
+    <script src="../javascript/main.js"></script>
+    <title>My Paint</title>
+</head>
+<body>
+    <div id="main">
+        <h1 id="heading">Simple Paint App</h1>
+        <div id="canvasdiv">
+            <canvas id="canvas" ></canvas>
+            <script>
+                var canvas,
+                    context,
+                    dragging = false, //this will be dragging if mouse move is followed by mouse down
+                    dragStartLocation,
+                    snapshot;
+                function init() {
+                    canvas = document.getElementById('canvas');
+                    clearCanvas = document.getElementById('clear');
+                    context = canvas.getContext('2d');
+                    canvas.fillStyle = 'black';
+                    canvas.addEventListener('mousedown', dragStart, false);
+                    canvas.addEventListener('mousemove', drag, false);
+                    canvas.addEventListener('mouseup', dragStop, false);
+                    clearCanvas.addEventListener('click', eraseCanvas, false);
+   
+                }
+
+                window.addEventListener('load', init, false);
+
+                function draw(position) {
+                    canvas.fillStyle = 'blue';
+                    drawRect(position);
+                }
+                function eraseCanvas() {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    console.log('click');
+                }
+                //define dragstart, drag and dragStop
+                function dragStart(event) {
+                    dragging = true;
+                    dragStartLocation = getCanvasCoordinates(event);
+                    takeSnapShot();
+                }
+                function calculateAngle(start, current) {
+
+                    var angle = 360 - Math.atan2(current.y - start.y, current.x - start.x) * 180 / Math.PI;
+
+
+                    return angle;
+                }
+                function drag(event) {
+                    var position;
+                    if (dragging === true) {
+                    restoreSnapShot();
+                    position = getCanvasCoordinates(event);
+                    //generic
+                    draw(position);
+                        }
+                }
+
+//Drag Stop
+                function dragStop(event) {
+                    dragging = false; //dragging stops here
+                    restoreSnapShot();
+                    var position = getCanvasCoordinates(event);
+                     //generic
+                    draw(position);
+                }
+                function getCanvasCoordinates(event) {
+                    var x = event.clientX - canvas.getBoundingClientRect().left;
+                    var y = event.clientY - canvas.getBoundingClientRect().top;
+
+                //return object where x is x and y is y
+                    return {x: x, y: y};
+                }
+
+
+                function takeSnapShot() {
+                    snapshot = context.getImageData(0, 0, canvas.width, canvas.height);
+                }
+                //These must be added to dragStart()
+                function restoreSnapShot() {
+                    context.putImageData(snapshot, 0, 0);
+                }
+
+                function drawRect(position) {
+                    console.log(position.x, dragStartLocation.x);
+                    var w = position.x - dragStartLocation.x ;
+                    var h = position.y - dragStartLocation.y  ;
+                    context.rect(dragStartLocation.x, dragStartLocation.y, w, h);
+                }
+            </script>
+        </div>
+        
+        <button type="button" id="clear">clear</button>
+    </div>
+</body>
+</html>
